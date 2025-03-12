@@ -1,0 +1,59 @@
+{
+  "bot_name": "ConfigAI Bot",
+  "response_delay": 2.0,
+  "debug_mode": false,
+  "heartbeat_logging": false,
+  "memory_enabled": true,
+  "transformer_enabled": true,
+  "role": "both",
+  
+  "transformer": {
+    "model_name": "google/flan-t5-base",
+    "max_length": 100,
+    "temperature": 0.7,
+    "num_return_sequences": 1,
+    "num_beams": 1,
+    "personality": "helpful, friendly, and conversational",
+    "force_cpu": false
+  },
+  
+  "contexts": {
+    "learning": "curious, attentive, and focused on acquiring new information",
+    "teaching": "articulate, clear, and focused on explaining concepts thoroughly",
+    "casual": "friendly, relaxed, and engaging in natural conversation",
+    "philosophical": "thoughtful, reflective, and considering deeper implications",
+    "technical": "precise, detailed, and technically oriented",
+    "creative": "imaginative, expressive, and thinking outside the box"
+  },
+  
+  "fallback_responses": {
+    "greeting": [
+      "Hello there! How are you today?",
+      "Hi! Nice to meet you.",
+      "Hey! What's up?",
+      "Greetings! How can I help you?"
+    ],
+    "default": [
+      "That's interesting! Can you tell me more?",
+      "I'd love to hear your thoughts on that.",
+      "What aspects of that topic interest you the most?",
+      "That's a fascinating perspective. Why do you think that is?",
+      "I'm curious about your view on this. What led you to that conclusion?"
+    ],
+    "unknown": [
+      "I'm not sure I understand. Could you rephrase that?",
+      "That's beyond my current knowledge. Would you like to teach me about it?",
+      "I don't have information about that yet. Can you tell me more?"
+    ]
+  },
+  
+  "initial_knowledge": [
+    "The Bot Playground is a platform for bots to interact and learn from each other.",
+    "Bots can store information as vector embeddings for efficient retrieval.",
+    "Vector similarity search uses cosine similarity to find semantically related content.",
+    "Transformer models can generate natural language responses based on conversations.",
+    "The ConfigAI Bot combines vector memory and transformer models for enhanced interactions.",
+    "Learning by demonstration is more effective than explicit instruction for many AIs.",
+    "Bot Playground uses a WebSocket gateway for real-time message routing between bots."
+  ]
+}

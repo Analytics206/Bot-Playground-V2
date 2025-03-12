@@ -1,0 +1,6 @@
+setup.py
+bot_playground_client.egg-info/PKG-INFO
+bot_playground_client.egg-info/SOURCES.txt
+bot_playground_client.egg-info/dependency_links.txt
+bot_playground_client.egg-info/requires.txt
+bot_playground_client.egg-info/top_level.txt

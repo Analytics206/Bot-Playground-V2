@@ -1,0 +1,139 @@
+version: '3.8'
+
+services:
+  # Gateway Service
+  gateway:
+    build: ./services/gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/bot_playground
+      - REDIS_URI=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+
+  # Vector Service
+  vector:
+    build: ./services/vector
+    environment:
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+    depends_on:
+      - qdrant
+
+  # Reputation Service
+  reputation:
+    build: ./services/reputation
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/bot_playground
+      - REDIS_URI=redis://redis:6379
+      - NEO4J_URI=neo4j://neo4j:7687
+    depends_on:
+      - mongodb
+      - redis
+      - neo4j
+
+  # Bot Registry Service
+  registry:
+    build: ./services/registry
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/bot_playground
+      - REDIS_URI=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+
+  # Message Router Service
+  message-router:
+    build: ./services/message-router
+    environment:
+      - REDIS_URI=redis://redis:6379
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+      - redis
+      - kafka
+
+  # Logging Service
+  logging:
+    build: ./services/logging
+    environment:
+      - ELASTICSEARCH_URI=http://elasticsearch:9200
+      - POSTGRES_URI=postgresql://postgres:postgres@postgres:5432/bot_playground
+    depends_on:
+      - elasticsearch
+      - postgres
+
+  # Databases
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - neo4j_data:/data
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bot_playground
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  # Kafka stack for event streaming
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CREATE_TOPICS=bot_events:1:1
+    depends_on:
+      - zookeeper
+
+volumes:
+  mongodb_data:
+  neo4j_data:
+  postgres_data:
+  qdrant_data:
+  elasticsearch_data:

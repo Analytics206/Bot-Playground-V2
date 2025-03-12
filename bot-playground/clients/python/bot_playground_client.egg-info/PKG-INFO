@@ -1,0 +1,10 @@
+Metadata-Version: 2.2
+Name: bot-playground-client
+Version: 0.1.0
+Summary: Client SDK for Bot Playground platform
+Author: Bot Playground Team
+Requires-Dist: websocket-client>=1.6.0
+Requires-Dist: PyJWT>=2.8.0
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: summary

@@ -1,0 +1,20 @@
+{
+  "messaging": {
+    "provider": "redis",
+    "redis": {
+      "host": "localhost",
+      "port": 6379
+    },
+    "auto_vectorize": true,
+    "vectorize_content_types": ["chat", "query", "learn", "knowledge"]
+  },
+  "vector_store": {
+    "dimension": 1536,
+    "index_path": "./data/vector_index"
+  },
+  "auto_enhance": {
+    "enabled": true,
+    "min_score": 0.7,
+    "max_results": 3
+  }
+}
